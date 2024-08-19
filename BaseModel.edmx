@@ -1,0 +1,479 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище HotelBase2Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="ЖалобыНаКомнату">
+          <Key>
+            <PropertyRef Name="Код" />
+          </Key>
+          <Property Name="Код" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="КодКомната" Type="int" Nullable="false" />
+          <Property Name="Текст" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Автор" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Дата" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Жильцы">
+          <Key>
+            <PropertyRef Name="Код" />
+          </Key>
+          <Property Name="Код" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Фио" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Комната">
+          <Key>
+            <PropertyRef Name="Код" />
+          </Key>
+          <Property Name="Код" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Номер" Type="int" Nullable="false" />
+          <Property Name="СвободныеМеста" Type="int" Nullable="false" />
+          <Property Name="КодЖильцы" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="КомнатаОбщежития">
+          <Key>
+            <PropertyRef Name="КодКомната" />
+            <PropertyRef Name="КодОбщежитие" />
+          </Key>
+          <Property Name="КодКомната" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="КодОбщежитие" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Общежитие">
+          <Key>
+            <PropertyRef Name="Код" />
+          </Key>
+          <Property Name="Код" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="КоличествоМест" Type="int" Nullable="false" />
+          <Property Name="Название" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Описание" Type="nvarchar(max)" />
+          <Property Name="Фото" Type="varbinary(max)" />
+          <Property Name="Цена" Type="money" Nullable="false" />
+          <Property Name="Доступность" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Тип">
+          <Key>
+            <PropertyRef Name="Код" />
+          </Key>
+          <Property Name="Код" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Название" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Описание" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="ТипОбщежития">
+          <Key>
+            <PropertyRef Name="КодОбщежитие" />
+            <PropertyRef Name="КодТип" />
+          </Key>
+          <Property Name="КодОбщежитие" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="КодТип" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ФотоКомнаты">
+          <Key>
+            <PropertyRef Name="Код" />
+          </Key>
+          <Property Name="Код" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="КодКомната" Type="int" Nullable="false" />
+          <Property Name="ИсточникИзображения" Type="varbinary(max)" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ЖалобыНаКомнату_Комната">
+          <End Role="Комната" Type="Self.Комната" Multiplicity="1" />
+          <End Role="ЖалобыНаКомнату" Type="Self.ЖалобыНаКомнату" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Комната">
+              <PropertyRef Name="Код" />
+            </Principal>
+            <Dependent Role="ЖалобыНаКомнату">
+              <PropertyRef Name="КодКомната" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Комната_Жильцы">
+          <End Role="Жильцы" Type="Self.Жильцы" Multiplicity="1" />
+          <End Role="Комната" Type="Self.Комната" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Жильцы">
+              <PropertyRef Name="Код" />
+            </Principal>
+            <Dependent Role="Комната">
+              <PropertyRef Name="КодЖильцы" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_КомнатаОбщежития_Комната">
+          <End Role="Комната" Type="Self.Комната" Multiplicity="1" />
+          <End Role="КомнатаОбщежития" Type="Self.КомнатаОбщежития" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Комната">
+              <PropertyRef Name="Код" />
+            </Principal>
+            <Dependent Role="КомнатаОбщежития">
+              <PropertyRef Name="КодКомната" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_КомнатаОбщежития_Общежитие">
+          <End Role="Общежитие" Type="Self.Общежитие" Multiplicity="1" />
+          <End Role="КомнатаОбщежития" Type="Self.КомнатаОбщежития" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Общежитие">
+              <PropertyRef Name="Код" />
+            </Principal>
+            <Dependent Role="КомнатаОбщежития">
+              <PropertyRef Name="КодОбщежитие" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ТипОбщежития_Общежитие">
+          <End Role="Общежитие" Type="Self.Общежитие" Multiplicity="1" />
+          <End Role="ТипОбщежития" Type="Self.ТипОбщежития" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Общежитие">
+              <PropertyRef Name="Код" />
+            </Principal>
+            <Dependent Role="ТипОбщежития">
+              <PropertyRef Name="КодОбщежитие" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ТипОбщежития_Тип">
+          <End Role="Тип" Type="Self.Тип" Multiplicity="1" />
+          <End Role="ТипОбщежития" Type="Self.ТипОбщежития" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Тип">
+              <PropertyRef Name="Код" />
+            </Principal>
+            <Dependent Role="ТипОбщежития">
+              <PropertyRef Name="КодТип" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ФотоКомнаты_Комната">
+          <End Role="Комната" Type="Self.Комната" Multiplicity="1" />
+          <End Role="ФотоКомнаты" Type="Self.ФотоКомнаты" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Комната">
+              <PropertyRef Name="Код" />
+            </Principal>
+            <Dependent Role="ФотоКомнаты">
+              <PropertyRef Name="КодКомната" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище HotelBase2ModelContainer">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ЖалобыНаКомнату" EntityType="Self.ЖалобыНаКомнату" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Жильцы" EntityType="Self.Жильцы" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Комната" EntityType="Self.Комната" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="КомнатаОбщежития" EntityType="Self.КомнатаОбщежития" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Общежитие" EntityType="Self.Общежитие" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Тип" EntityType="Self.Тип" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ТипОбщежития" EntityType="Self.ТипОбщежития" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ФотоКомнаты" EntityType="Self.ФотоКомнаты" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ЖалобыНаКомнату_Комната" Association="Self.FK_ЖалобыНаКомнату_Комната">
+            <End Role="Комната" EntitySet="Комната" />
+            <End Role="ЖалобыНаКомнату" EntitySet="ЖалобыНаКомнату" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Комната_Жильцы" Association="Self.FK_Комната_Жильцы">
+            <End Role="Жильцы" EntitySet="Жильцы" />
+            <End Role="Комната" EntitySet="Комната" />
+          </AssociationSet>
+          <AssociationSet Name="FK_КомнатаОбщежития_Комната" Association="Self.FK_КомнатаОбщежития_Комната">
+            <End Role="Комната" EntitySet="Комната" />
+            <End Role="КомнатаОбщежития" EntitySet="КомнатаОбщежития" />
+          </AssociationSet>
+          <AssociationSet Name="FK_КомнатаОбщежития_Общежитие" Association="Self.FK_КомнатаОбщежития_Общежитие">
+            <End Role="Общежитие" EntitySet="Общежитие" />
+            <End Role="КомнатаОбщежития" EntitySet="КомнатаОбщежития" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ТипОбщежития_Общежитие" Association="Self.FK_ТипОбщежития_Общежитие">
+            <End Role="Общежитие" EntitySet="Общежитие" />
+            <End Role="ТипОбщежития" EntitySet="ТипОбщежития" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ТипОбщежития_Тип" Association="Self.FK_ТипОбщежития_Тип">
+            <End Role="Тип" EntitySet="Тип" />
+            <End Role="ТипОбщежития" EntitySet="ТипОбщежития" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ФотоКомнаты_Комната" Association="Self.FK_ФотоКомнаты_Комната">
+            <End Role="Комната" EntitySet="Комната" />
+            <End Role="ФотоКомнаты" EntitySet="ФотоКомнаты" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HotelBase2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="ЖалобыНаКомнату">
+          <Key>
+            <PropertyRef Name="Код" />
+          </Key>
+          <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="КодКомната" Type="Int32" Nullable="false" />
+          <Property Name="Текст" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Автор" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Дата" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Комната" Relationship="Self.FK_ЖалобыНаКомнату_Комната" FromRole="ЖалобыНаКомнату" ToRole="Комната" />
+        </EntityType>
+        <EntityType Name="Жильцы">
+          <Key>
+            <PropertyRef Name="Код" />
+          </Key>
+          <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Фио" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Комната" Relationship="Self.FK_Комната_Жильцы" FromRole="Жильцы" ToRole="Комната" />
+        </EntityType>
+        <EntityType Name="Комната">
+          <Key>
+            <PropertyRef Name="Код" />
+          </Key>
+          <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Номер" Type="Int32" Nullable="false" />
+          <Property Name="СвободныеМеста" Type="Int32" Nullable="false" />
+          <Property Name="КодЖильцы" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ЖалобыНаКомнату" Relationship="Self.FK_ЖалобыНаКомнату_Комната" FromRole="Комната" ToRole="ЖалобыНаКомнату" />
+          <NavigationProperty Name="Жильцы" Relationship="Self.FK_Комната_Жильцы" FromRole="Комната" ToRole="Жильцы" />
+          <NavigationProperty Name="ФотоКомнаты" Relationship="Self.FK_ФотоКомнаты_Комната" FromRole="Комната" ToRole="ФотоКомнаты" />
+          <NavigationProperty Name="Общежитие" Relationship="Self.КомнатаОбщежития" FromRole="Комната" ToRole="Общежитие" />
+        </EntityType>
+        <EntityType Name="Общежитие">
+          <Key>
+            <PropertyRef Name="Код" />
+          </Key>
+          <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="КоличествоМест" Type="Int32" Nullable="false" />
+          <Property Name="Название" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Описание" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Фото" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Цена" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Доступность" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Комната" Relationship="Self.КомнатаОбщежития" FromRole="Общежитие" ToRole="Комната" />
+          <NavigationProperty Name="Тип" Relationship="Self.ТипОбщежития" FromRole="Общежитие" ToRole="Тип" />
+        </EntityType>
+        <EntityType Name="Тип">
+          <Key>
+            <PropertyRef Name="Код" />
+          </Key>
+          <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Название" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Описание" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Общежитие" Relationship="Self.ТипОбщежития" FromRole="Тип" ToRole="Общежитие" />
+        </EntityType>
+        <EntityType Name="ФотоКомнаты">
+          <Key>
+            <PropertyRef Name="Код" />
+          </Key>
+          <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="КодКомната" Type="Int32" Nullable="false" />
+          <Property Name="ИсточникИзображения" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <NavigationProperty Name="Комната" Relationship="Self.FK_ФотоКомнаты_Комната" FromRole="ФотоКомнаты" ToRole="Комната" />
+        </EntityType>
+        <Association Name="FK_ЖалобыНаКомнату_Комната">
+          <End Role="Комната" Type="Self.Комната" Multiplicity="1" />
+          <End Role="ЖалобыНаКомнату" Type="Self.ЖалобыНаКомнату" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Комната">
+              <PropertyRef Name="Код" />
+            </Principal>
+            <Dependent Role="ЖалобыНаКомнату">
+              <PropertyRef Name="КодКомната" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Комната_Жильцы">
+          <End Role="Жильцы" Type="Self.Жильцы" Multiplicity="1" />
+          <End Role="Комната" Type="Self.Комната" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Жильцы">
+              <PropertyRef Name="Код" />
+            </Principal>
+            <Dependent Role="Комната">
+              <PropertyRef Name="КодЖильцы" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ФотоКомнаты_Комната">
+          <End Role="Комната" Type="Self.Комната" Multiplicity="1" />
+          <End Role="ФотоКомнаты" Type="Self.ФотоКомнаты" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Комната">
+              <PropertyRef Name="Код" />
+            </Principal>
+            <Dependent Role="ФотоКомнаты">
+              <PropertyRef Name="КодКомната" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="КомнатаОбщежития">
+          <End Role="Комната" Type="Self.Комната" Multiplicity="*" />
+          <End Role="Общежитие" Type="Self.Общежитие" Multiplicity="*" />
+        </Association>
+        <Association Name="ТипОбщежития">
+          <End Role="Общежитие" Type="Self.Общежитие" Multiplicity="*" />
+          <End Role="Тип" Type="Self.Тип" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="HotelBase2Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="ЖалобыНаКомнату" EntityType="Self.ЖалобыНаКомнату" />
+          <EntitySet Name="Жильцы" EntityType="Self.Жильцы" />
+          <EntitySet Name="Комната" EntityType="Self.Комната" />
+          <EntitySet Name="Общежитие" EntityType="Self.Общежитие" />
+          <EntitySet Name="Тип" EntityType="Self.Тип" />
+          <EntitySet Name="ФотоКомнаты" EntityType="Self.ФотоКомнаты" />
+          <AssociationSet Name="FK_ЖалобыНаКомнату_Комната" Association="Self.FK_ЖалобыНаКомнату_Комната">
+            <End Role="Комната" EntitySet="Комната" />
+            <End Role="ЖалобыНаКомнату" EntitySet="ЖалобыНаКомнату" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Комната_Жильцы" Association="Self.FK_Комната_Жильцы">
+            <End Role="Жильцы" EntitySet="Жильцы" />
+            <End Role="Комната" EntitySet="Комната" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ФотоКомнаты_Комната" Association="Self.FK_ФотоКомнаты_Комната">
+            <End Role="Комната" EntitySet="Комната" />
+            <End Role="ФотоКомнаты" EntitySet="ФотоКомнаты" />
+          </AssociationSet>
+          <AssociationSet Name="КомнатаОбщежития" Association="Self.КомнатаОбщежития">
+            <End Role="Комната" EntitySet="Комната" />
+            <End Role="Общежитие" EntitySet="Общежитие" />
+          </AssociationSet>
+          <AssociationSet Name="ТипОбщежития" Association="Self.ТипОбщежития">
+            <End Role="Общежитие" EntitySet="Общежитие" />
+            <End Role="Тип" EntitySet="Тип" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище HotelBase2ModelContainer" CdmEntityContainer="HotelBase2Entities">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="HotelBase2Model.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ЖалобыНаКомнату">
+            <EntityTypeMapping TypeName="HotelBase2Model.ЖалобыНаКомнату">
+              <MappingFragment StoreEntitySet="ЖалобыНаКомнату">
+                <ScalarProperty Name="Код" ColumnName="Код" />
+                <ScalarProperty Name="КодКомната" ColumnName="КодКомната" />
+                <ScalarProperty Name="Текст" ColumnName="Текст" />
+                <ScalarProperty Name="Автор" ColumnName="Автор" />
+                <ScalarProperty Name="Дата" ColumnName="Дата" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Жильцы">
+            <EntityTypeMapping TypeName="HotelBase2Model.Жильцы">
+              <MappingFragment StoreEntitySet="Жильцы">
+                <ScalarProperty Name="Код" ColumnName="Код" />
+                <ScalarProperty Name="Фио" ColumnName="Фио" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Комната">
+            <EntityTypeMapping TypeName="HotelBase2Model.Комната">
+              <MappingFragment StoreEntitySet="Комната">
+                <ScalarProperty Name="Код" ColumnName="Код" />
+                <ScalarProperty Name="Номер" ColumnName="Номер" />
+                <ScalarProperty Name="СвободныеМеста" ColumnName="СвободныеМеста" />
+                <ScalarProperty Name="КодЖильцы" ColumnName="КодЖильцы" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Общежитие">
+            <EntityTypeMapping TypeName="HotelBase2Model.Общежитие">
+              <MappingFragment StoreEntitySet="Общежитие">
+                <ScalarProperty Name="Код" ColumnName="Код" />
+                <ScalarProperty Name="КоличествоМест" ColumnName="КоличествоМест" />
+                <ScalarProperty Name="Название" ColumnName="Название" />
+                <ScalarProperty Name="Описание" ColumnName="Описание" />
+                <ScalarProperty Name="Фото" ColumnName="Фото" />
+                <ScalarProperty Name="Цена" ColumnName="Цена" />
+                <ScalarProperty Name="Доступность" ColumnName="Доступность" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Тип">
+            <EntityTypeMapping TypeName="HotelBase2Model.Тип">
+              <MappingFragment StoreEntitySet="Тип">
+                <ScalarProperty Name="Код" ColumnName="Код" />
+                <ScalarProperty Name="Название" ColumnName="Название" />
+                <ScalarProperty Name="Описание" ColumnName="Описание" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ФотоКомнаты">
+            <EntityTypeMapping TypeName="HotelBase2Model.ФотоКомнаты">
+              <MappingFragment StoreEntitySet="ФотоКомнаты">
+                <ScalarProperty Name="Код" ColumnName="Код" />
+                <ScalarProperty Name="КодКомната" ColumnName="КодКомната" />
+                <ScalarProperty Name="ИсточникИзображения" ColumnName="ИсточникИзображения" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="КомнатаОбщежития" TypeName="HotelBase2Model.КомнатаОбщежития" StoreEntitySet="КомнатаОбщежития">
+            <EndProperty Name="Комната">
+              <ScalarProperty Name="Код" ColumnName="КодКомната" />
+            </EndProperty>
+            <EndProperty Name="Общежитие">
+              <ScalarProperty Name="Код" ColumnName="КодОбщежитие" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ТипОбщежития" TypeName="HotelBase2Model.ТипОбщежития" StoreEntitySet="ТипОбщежития">
+            <EndProperty Name="Общежитие">
+              <ScalarProperty Name="Код" ColumnName="КодОбщежитие" />
+            </EndProperty>
+            <EndProperty Name="Тип">
+              <ScalarProperty Name="Код" ColumnName="КодТип" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

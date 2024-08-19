@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7a0f393f6a4e470391f71fcd4a8e067b" Name="Diagram1">
+        <EntityTypeShape EntityType="HotelBase2Model.sysdiagram" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="HotelBase2Model.ЖалобыНаКомнату" Width="1.5" PointX="5.25" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="HotelBase2Model.Жильцы" Width="1.5" PointX="0.75" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="HotelBase2Model.Комната" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="HotelBase2Model.Общежитие" Width="1.5" PointX="5.25" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="HotelBase2Model.Тип" Width="1.5" PointX="7.5" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="HotelBase2Model.ФотоКомнаты" Width="1.5" PointX="5.25" PointY="7.625" IsExpanded="true" />
+        <AssociationConnector Association="HotelBase2Model.FK_ЖалобыНаКомнату_Комната" ManuallyRouted="false" />
+        <AssociationConnector Association="HotelBase2Model.FK_Комната_Жильцы" ManuallyRouted="false" />
+        <AssociationConnector Association="HotelBase2Model.FK_ФотоКомнаты_Комната" ManuallyRouted="false" />
+        <AssociationConnector Association="HotelBase2Model.КомнатаОбщежития" ManuallyRouted="false" />
+        <AssociationConnector Association="HotelBase2Model.ТипОбщежития" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
