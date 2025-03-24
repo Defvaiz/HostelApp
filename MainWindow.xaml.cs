@@ -24,10 +24,10 @@ namespace HostelApp
         public MainWindow()
         {
             InitializeComponent();
-            MainFrame.Navigate(new HostelPage());
+            MainFrame.Navigate(new DormitoryPage());
             Manager.MainFrame = MainFrame;
 
-            ImportHostel();
+            //ImportHostel();
 
         }
 
@@ -48,7 +48,7 @@ namespace HostelApp
 
                 };
 
-                foreach (var Тип in data[5].Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var Тип in data[5].Replace("\"", "").Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     var currentType = HotelBase2Entities.GetContext().Тип.FirstOrDefault(p => p.Название == Тип);
                     if (currentType == null)
@@ -59,8 +59,9 @@ namespace HostelApp
                         };
                         HotelBase2Entities.GetContext().Тип.Add(currentType);
                     }
+                    tempHostel.Тип = currentType;
 
-                    currentType.Общежитие.Add(tempHostel);
+                  //  currentType.Общежитие.Add(tempHostel);
                 }
 
                 try

@@ -11,14 +11,16 @@ namespace HostelApp
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.IO;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
+
     public partial class Общежитие
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Общежитие()
         {
             this.Комната = new HashSet<Комната>();
-            this.Тип = new HashSet<Тип>();
         }
     
         public int Код { get; set; }
@@ -28,10 +30,39 @@ namespace HostelApp
         public byte[] Фото { get; set; }
         public decimal Цена { get; set; }
         public bool Доступность { get; set; }
+        public int КодТипа { get; set; }
+
+        public string ActualText
+        {
+            get
+            {
+                return (Доступность) ? "Свободно" : "Нет мест";
+            }
+        }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Комната> Комната { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Тип> Тип { get; set; }
+        public virtual Тип Тип { get; set; }
+
+        public ImageSource ImagePrewiew
+        {
+            get
+            {
+                if (Фото == null || Фото.Length == 0)
+                    return new BitmapImage(new Uri("pack://application:,,,/Resources/images.png"));
+
+                using (var stream = new MemoryStream(Фото))
+                {
+                    var image = new BitmapImage();
+                    image.BeginInit();
+                    image.CacheOption = BitmapCacheOption.OnLoad;
+                    image.StreamSource = stream;
+                    image.EndInit();
+                    return image;
+                }
+            }
+        }
+
     }
+
 }

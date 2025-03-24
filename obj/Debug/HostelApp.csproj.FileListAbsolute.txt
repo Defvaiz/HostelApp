@@ -26,3 +26,5 @@ C:\Users\Максим\source\repos\HostelApp\obj\Debug\HostelApp.csproj.CoreComp
 C:\Users\Максим\source\repos\HostelApp\obj\Debug\HostelApp.csproj.CopyComplete
 C:\Users\Максим\source\repos\HostelApp\obj\Debug\HostelApp.exe
 C:\Users\Максим\source\repos\HostelApp\obj\Debug\HostelApp.pdb
+C:\Users\Максим\source\repos\HostelApp\obj\Debug\DormitoryPage.g.cs
+C:\Users\Максим\source\repos\HostelApp\obj\Debug\DormitoryPage.baml

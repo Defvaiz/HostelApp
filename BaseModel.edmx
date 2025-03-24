@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище HotelBase2Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Хранилище HotelBase2Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="diagram_id" />
@@ -60,6 +60,7 @@
           <Property Name="Фото" Type="varbinary(max)" />
           <Property Name="Цена" Type="money" Nullable="false" />
           <Property Name="Доступность" Type="bit" Nullable="false" />
+          <Property Name="КодТипа" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Тип">
           <Key>
@@ -68,14 +69,6 @@
           <Property Name="Код" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Название" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Описание" Type="nvarchar(max)" />
-        </EntityType>
-        <EntityType Name="ТипОбщежития">
-          <Key>
-            <PropertyRef Name="КодОбщежитие" />
-            <PropertyRef Name="КодТип" />
-          </Key>
-          <Property Name="КодОбщежитие" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="КодТип" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ФотоКомнаты">
           <Key>
@@ -133,27 +126,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ТипОбщежития_Общежитие">
-          <End Role="Общежитие" Type="Self.Общежитие" Multiplicity="1" />
-          <End Role="ТипОбщежития" Type="Self.ТипОбщежития" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Общежитие">
-              <PropertyRef Name="Код" />
-            </Principal>
-            <Dependent Role="ТипОбщежития">
-              <PropertyRef Name="КодОбщежитие" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ТипОбщежития_Тип">
+        <Association Name="FK_Общежитие_Тип">
           <End Role="Тип" Type="Self.Тип" Multiplicity="1" />
-          <End Role="ТипОбщежития" Type="Self.ТипОбщежития" Multiplicity="*" />
+          <End Role="Общежитие" Type="Self.Общежитие" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Тип">
               <PropertyRef Name="Код" />
             </Principal>
-            <Dependent Role="ТипОбщежития">
-              <PropertyRef Name="КодТип" />
+            <Dependent Role="Общежитие">
+              <PropertyRef Name="КодТипа" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -177,7 +158,6 @@
           <EntitySet Name="КомнатаОбщежития" EntityType="Self.КомнатаОбщежития" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Общежитие" EntityType="Self.Общежитие" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Тип" EntityType="Self.Тип" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ТипОбщежития" EntityType="Self.ТипОбщежития" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ФотоКомнаты" EntityType="Self.ФотоКомнаты" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_ЖалобыНаКомнату_Комната" Association="Self.FK_ЖалобыНаКомнату_Комната">
             <End Role="Комната" EntitySet="Комната" />
@@ -195,21 +175,16 @@
             <End Role="Общежитие" EntitySet="Общежитие" />
             <End Role="КомнатаОбщежития" EntitySet="КомнатаОбщежития" />
           </AssociationSet>
-          <AssociationSet Name="FK_ТипОбщежития_Общежитие" Association="Self.FK_ТипОбщежития_Общежитие">
-            <End Role="Общежитие" EntitySet="Общежитие" />
-            <End Role="ТипОбщежития" EntitySet="ТипОбщежития" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ТипОбщежития_Тип" Association="Self.FK_ТипОбщежития_Тип">
+          <AssociationSet Name="FK_Общежитие_Тип" Association="Self.FK_Общежитие_Тип">
             <End Role="Тип" EntitySet="Тип" />
-            <End Role="ТипОбщежития" EntitySet="ТипОбщежития" />
+            <End Role="Общежитие" EntitySet="Общежитие" />
           </AssociationSet>
           <AssociationSet Name="FK_ФотоКомнаты_Комната" Association="Self.FK_ФотоКомнаты_Комната">
             <End Role="Комната" EntitySet="Комната" />
             <End Role="ФотоКомнаты" EntitySet="ФотоКомнаты" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="HotelBase2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -267,16 +242,8 @@
           <Property Name="Цена" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="Доступность" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Комната" Relationship="Self.КомнатаОбщежития" FromRole="Общежитие" ToRole="Комната" />
-          <NavigationProperty Name="Тип" Relationship="Self.ТипОбщежития" FromRole="Общежитие" ToRole="Тип" />
-        </EntityType>
-        <EntityType Name="Тип">
-          <Key>
-            <PropertyRef Name="Код" />
-          </Key>
-          <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Название" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Описание" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Общежитие" Relationship="Self.ТипОбщежития" FromRole="Тип" ToRole="Общежитие" />
+          <Property Name="КодТипа" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Тип" Relationship="HotelBase2Model.FK_Общежитие_Тип" FromRole="Общежитие" ToRole="Тип" />
         </EntityType>
         <EntityType Name="ФотоКомнаты">
           <Key>
@@ -327,17 +294,12 @@
           <End Role="Комната" Type="Self.Комната" Multiplicity="*" />
           <End Role="Общежитие" Type="Self.Общежитие" Multiplicity="*" />
         </Association>
-        <Association Name="ТипОбщежития">
-          <End Role="Общежитие" Type="Self.Общежитие" Multiplicity="*" />
-          <End Role="Тип" Type="Self.Тип" Multiplicity="*" />
-        </Association>
         <EntityContainer Name="HotelBase2Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="ЖалобыНаКомнату" EntityType="Self.ЖалобыНаКомнату" />
           <EntitySet Name="Жильцы" EntityType="Self.Жильцы" />
           <EntitySet Name="Комната" EntityType="Self.Комната" />
           <EntitySet Name="Общежитие" EntityType="Self.Общежитие" />
-          <EntitySet Name="Тип" EntityType="Self.Тип" />
           <EntitySet Name="ФотоКомнаты" EntityType="Self.ФотоКомнаты" />
           <AssociationSet Name="FK_ЖалобыНаКомнату_Комната" Association="Self.FK_ЖалобыНаКомнату_Комната">
             <End Role="Комната" EntitySet="Комната" />
@@ -355,11 +317,33 @@
             <End Role="Комната" EntitySet="Комната" />
             <End Role="Общежитие" EntitySet="Общежитие" />
           </AssociationSet>
-          <AssociationSet Name="ТипОбщежития" Association="Self.ТипОбщежития">
-            <End Role="Общежитие" EntitySet="Общежитие" />
+          <EntitySet Name="Тип" EntityType="HotelBase2Model.Тип" />
+          <AssociationSet Name="FK_Общежитие_Тип" Association="HotelBase2Model.FK_Общежитие_Тип">
             <End Role="Тип" EntitySet="Тип" />
+            <End Role="Общежитие" EntitySet="Общежитие" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Тип">
+          <Key>
+            <PropertyRef Name="Код" />
+          </Key>
+          <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Название" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Описание" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Общежитие" Relationship="HotelBase2Model.FK_Общежитие_Тип" FromRole="Тип" ToRole="Общежитие" />
+        </EntityType>
+        <Association Name="FK_Общежитие_Тип">
+          <End Type="HotelBase2Model.Тип" Role="Тип" Multiplicity="1" />
+          <End Type="HotelBase2Model.Общежитие" Role="Общежитие" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Тип">
+              <PropertyRef Name="Код" />
+            </Principal>
+            <Dependent Role="Общежитие">
+              <PropertyRef Name="КодТипа" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -409,6 +393,7 @@
           <EntitySetMapping Name="Общежитие">
             <EntityTypeMapping TypeName="HotelBase2Model.Общежитие">
               <MappingFragment StoreEntitySet="Общежитие">
+                <ScalarProperty Name="КодТипа" ColumnName="КодТипа" />
                 <ScalarProperty Name="Код" ColumnName="Код" />
                 <ScalarProperty Name="КоличествоМест" ColumnName="КоличествоМест" />
                 <ScalarProperty Name="Название" ColumnName="Название" />
@@ -416,15 +401,6 @@
                 <ScalarProperty Name="Фото" ColumnName="Фото" />
                 <ScalarProperty Name="Цена" ColumnName="Цена" />
                 <ScalarProperty Name="Доступность" ColumnName="Доступность" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Тип">
-            <EntityTypeMapping TypeName="HotelBase2Model.Тип">
-              <MappingFragment StoreEntitySet="Тип">
-                <ScalarProperty Name="Код" ColumnName="Код" />
-                <ScalarProperty Name="Название" ColumnName="Название" />
-                <ScalarProperty Name="Описание" ColumnName="Описание" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -445,14 +421,15 @@
               <ScalarProperty Name="Код" ColumnName="КодОбщежитие" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="ТипОбщежития" TypeName="HotelBase2Model.ТипОбщежития" StoreEntitySet="ТипОбщежития">
-            <EndProperty Name="Общежитие">
-              <ScalarProperty Name="Код" ColumnName="КодОбщежитие" />
-            </EndProperty>
-            <EndProperty Name="Тип">
-              <ScalarProperty Name="Код" ColumnName="КодТип" />
-            </EndProperty>
-          </AssociationSetMapping>
+          <EntitySetMapping Name="Тип">
+            <EntityTypeMapping TypeName="HotelBase2Model.Тип">
+              <MappingFragment StoreEntitySet="Тип">
+                <ScalarProperty Name="Описание" ColumnName="Описание" />
+                <ScalarProperty Name="Название" ColumnName="Название" />
+                <ScalarProperty Name="Код" ColumnName="Код" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -467,7 +444,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />

@@ -54,16 +54,8 @@
     <Property Name="Цена" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
     <Property Name="Доступность" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="Комната" Relationship="Self.КомнатаОбщежития" FromRole="Общежитие" ToRole="Комната" />
-    <NavigationProperty Name="Тип" Relationship="Self.ТипОбщежития" FromRole="Общежитие" ToRole="Тип" />
-  </EntityType>
-  <EntityType Name="Тип">
-    <Key>
-      <PropertyRef Name="Код" />
-    </Key>
-    <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Название" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="Описание" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Общежитие" Relationship="Self.ТипОбщежития" FromRole="Тип" ToRole="Общежитие" />
+    <Property Name="КодТипа" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Тип" Relationship="HotelBase2Model.FK_Общежитие_Тип" FromRole="Общежитие" ToRole="Тип" />
   </EntityType>
   <EntityType Name="ФотоКомнаты">
     <Key>
@@ -114,17 +106,12 @@
     <End Role="Комната" Type="Self.Комната" Multiplicity="*" />
     <End Role="Общежитие" Type="Self.Общежитие" Multiplicity="*" />
   </Association>
-  <Association Name="ТипОбщежития">
-    <End Role="Общежитие" Type="Self.Общежитие" Multiplicity="*" />
-    <End Role="Тип" Type="Self.Тип" Multiplicity="*" />
-  </Association>
   <EntityContainer Name="HotelBase2Entities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
     <EntitySet Name="ЖалобыНаКомнату" EntityType="Self.ЖалобыНаКомнату" />
     <EntitySet Name="Жильцы" EntityType="Self.Жильцы" />
     <EntitySet Name="Комната" EntityType="Self.Комната" />
     <EntitySet Name="Общежитие" EntityType="Self.Общежитие" />
-    <EntitySet Name="Тип" EntityType="Self.Тип" />
     <EntitySet Name="ФотоКомнаты" EntityType="Self.ФотоКомнаты" />
     <AssociationSet Name="FK_ЖалобыНаКомнату_Комната" Association="Self.FK_ЖалобыНаКомнату_Комната">
       <End Role="Комната" EntitySet="Комната" />
@@ -142,9 +129,31 @@
       <End Role="Комната" EntitySet="Комната" />
       <End Role="Общежитие" EntitySet="Общежитие" />
     </AssociationSet>
-    <AssociationSet Name="ТипОбщежития" Association="Self.ТипОбщежития">
-      <End Role="Общежитие" EntitySet="Общежитие" />
+    <EntitySet Name="Тип" EntityType="HotelBase2Model.Тип" />
+    <AssociationSet Name="FK_Общежитие_Тип" Association="HotelBase2Model.FK_Общежитие_Тип">
       <End Role="Тип" EntitySet="Тип" />
+      <End Role="Общежитие" EntitySet="Общежитие" />
     </AssociationSet>
   </EntityContainer>
+  <EntityType Name="Тип">
+    <Key>
+      <PropertyRef Name="Код" />
+    </Key>
+    <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Название" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Описание" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Общежитие" Relationship="HotelBase2Model.FK_Общежитие_Тип" FromRole="Тип" ToRole="Общежитие" />
+  </EntityType>
+  <Association Name="FK_Общежитие_Тип">
+    <End Type="HotelBase2Model.Тип" Role="Тип" Multiplicity="1" />
+    <End Type="HotelBase2Model.Общежитие" Role="Общежитие" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Тип">
+        <PropertyRef Name="Код" />
+      </Principal>
+      <Dependent Role="Общежитие">
+        <PropertyRef Name="КодТипа" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

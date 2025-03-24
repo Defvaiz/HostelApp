@@ -44,6 +44,7 @@
     <EntitySetMapping Name="Общежитие">
       <EntityTypeMapping TypeName="HotelBase2Model.Общежитие">
         <MappingFragment StoreEntitySet="Общежитие">
+          <ScalarProperty Name="КодТипа" ColumnName="КодТипа" />
           <ScalarProperty Name="Код" ColumnName="Код" />
           <ScalarProperty Name="КоличествоМест" ColumnName="КоличествоМест" />
           <ScalarProperty Name="Название" ColumnName="Название" />
@@ -51,15 +52,6 @@
           <ScalarProperty Name="Фото" ColumnName="Фото" />
           <ScalarProperty Name="Цена" ColumnName="Цена" />
           <ScalarProperty Name="Доступность" ColumnName="Доступность" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Тип">
-      <EntityTypeMapping TypeName="HotelBase2Model.Тип">
-        <MappingFragment StoreEntitySet="Тип">
-          <ScalarProperty Name="Код" ColumnName="Код" />
-          <ScalarProperty Name="Название" ColumnName="Название" />
-          <ScalarProperty Name="Описание" ColumnName="Описание" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -80,13 +72,14 @@
         <ScalarProperty Name="Код" ColumnName="КодОбщежитие" />
       </EndProperty>
     </AssociationSetMapping>
-    <AssociationSetMapping Name="ТипОбщежития" TypeName="HotelBase2Model.ТипОбщежития" StoreEntitySet="ТипОбщежития">
-      <EndProperty Name="Общежитие">
-        <ScalarProperty Name="Код" ColumnName="КодОбщежитие" />
-      </EndProperty>
-      <EndProperty Name="Тип">
-        <ScalarProperty Name="Код" ColumnName="КодТип" />
-      </EndProperty>
-    </AssociationSetMapping>
+    <EntitySetMapping Name="Тип">
+      <EntityTypeMapping TypeName="HotelBase2Model.Тип">
+        <MappingFragment StoreEntitySet="Тип">
+          <ScalarProperty Name="Описание" ColumnName="Описание" />
+          <ScalarProperty Name="Название" ColumnName="Название" />
+          <ScalarProperty Name="Код" ColumnName="Код" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

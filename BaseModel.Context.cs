@@ -20,14 +20,13 @@ namespace HostelApp
             : base("name=HotelBase2Entities")
         {
         }
-
+    
         public static HotelBase2Entities GetContext()
         {
             if (_context == null)
                 _context = new HotelBase2Entities();
             return _context;
         }
-    
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
@@ -38,7 +37,7 @@ namespace HostelApp
         public virtual DbSet<Жильцы> Жильцы { get; set; }
         public virtual DbSet<Комната> Комната { get; set; }
         public virtual DbSet<Общежитие> Общежитие { get; set; }
-        public virtual DbSet<Тип> Тип { get; set; }
         public virtual DbSet<ФотоКомнаты> ФотоКомнаты { get; set; }
+        public virtual DbSet<Тип> Тип { get; set; }
     }
 }
